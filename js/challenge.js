@@ -3,13 +3,13 @@ const plusBtn = document.querySelector('#plus');
 const minusBtn = document.querySelector('#minus');
 const heartBtn = document.querySelector('#heart');
 const submitBtn = document.querySelector('#submit');
+const list = document.querySelector('ul.likes');
 
 const counter = (() => {
   const counter = document.querySelector('#counter');
-  let n = 0;
   let counting = true;
   const count = () => {
-    n = counter.textContent;
+    let n = counter.textContent;
     n++;
     counter.textContent = n;
   }
@@ -57,15 +57,33 @@ const counter = (() => {
     clearInterval(int);
     int = setInterval(count, 1000);
   }
-  return { pause, plus, minus };
+  const heart = () => {
+    let time = counter.textContent;
+    if(document.querySelector(`li[data-time='${time}']`)) {
+      const item = document.querySelector(`li[data-time='${time}']`);
+      let likes = item.getAttribute('data-likes');
+      console.log(likes);
+      likes++;
+      item.textContent = `${time} has been liked ${likes} times.`;
+    } else {
+      let likes = 1;
+      const item = document.createElement('li');
+      item.setAttribute('data-time', time);
+      item.setAttribute('data-likes', likes);
+      item.textContent = `${time} has been liked ${likes} times.`;
+      list.appendChild(item);
+    }
+  }
+  return { pause, plus, minus, heart };
 })();
 
 const listeners = (() => {
-pauseBtn.addEventListener('click', counter.pause);
-
-plusBtn.addEventListener('click', counter.plus);
-
-minusBtn.addEventListener('click', counter.minus);
+  pauseBtn.addEventListener('click', counter.pause);
+  plusBtn.addEventListener('click', counter.plus);
+  minusBtn.addEventListener('click', counter.minus);
+  heartBtn.addEventListener('click', counter.heart);
 })();
 
 
+// li in ul.likes for heart messages
+// div#list.comments p for comments
