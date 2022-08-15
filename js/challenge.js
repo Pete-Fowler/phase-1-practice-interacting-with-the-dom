@@ -4,6 +4,7 @@ const minusBtn = document.querySelector('#minus');
 const heartBtn = document.querySelector('#heart');
 const submitBtn = document.querySelector('#submit');
 const list = document.querySelector('ul.likes');
+const form = document.querySelector('#comment-form');
 
 const counter = (() => {
   const counter = document.querySelector('#counter');
@@ -77,13 +78,19 @@ const counter = (() => {
   return { pause, plus, minus, heart };
 })();
 
+const submit = (e) => {
+  e.preventDefault();
+  const box = document.querySelector('div#list.comments');
+  const paragraph = document.createElement('p');
+  paragraph.textContent = form.children[0].value;
+  form.children[0].value = '';
+  box.append(paragraph);
+}
+
 const listeners = (() => {
   pauseBtn.addEventListener('click', counter.pause);
   plusBtn.addEventListener('click', counter.plus);
   minusBtn.addEventListener('click', counter.minus);
   heartBtn.addEventListener('click', counter.heart);
+  form.addEventListener('submit', submit);
 })();
-
-
-// li in ul.likes for heart messages
-// div#list.comments p for comments
